@@ -1,5 +1,6 @@
 package reader
 
+import scala.annotation.tailrec
 import scala.io.StdIn.{readInt, readLine, readLong}
 import scala.util.Try
 
@@ -31,31 +32,31 @@ object BukuReadHelper {
     readLine()
   }
 
+  @tailrec
   def readTahunTerbit(prompt: String): Int = {
-    while (true) {
-      print(prompt)
-      Try(readInt()).toOption match {
-        case None => println("Tahun terbit harus angka")
-        case Some(value) =>
-          if (value <= 0) println("Tahun terbit harus lebih dari 0")
-          else return value;
-      }
+    print(prompt)
+    Try(readInt()).toOption match {
+      case Some(value) if value <= 0 =>
+        println("Tahun terbit harus lebih dari 0")
+        readTahunTerbit(prompt)
+      case None =>
+        println("Tahun terbit harus angka")
+        readTahunTerbit(prompt)
+      case Some(value) => value
     }
-
-    0
   }
 
+  @tailrec
   def readHarga(prompt: String): Long = {
-    while (true) {
-      print(prompt)
-      Try(readLong()).toOption match {
-        case None => println("Harga harus angka")
-        case Some(value) =>
-          if (value <= 0) println("Harga harus lebih dari 0")
-          else return value;
-      }
+    print(prompt)
+    Try(readLong()).toOption match {
+      case Some(value) if value <= 0 =>
+        println("Harga harus lebih dari 0")
+        readHarga(prompt)
+      case None =>
+        println("Harga harus angka")
+        readHarga(prompt)
+      case Some(value) => value
     }
-
-    0
   }
 }

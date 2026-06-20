@@ -5,9 +5,10 @@ import entity.Buku
 
 import scala.collection.mutable.ArrayBuffer
 import scala.io.StdIn.readInt
-import scala.util.Try
+import scala.util.{Failure, Success, Try}
 
 class Program extends IProgram {
+  val storage = BukuStorage()
   var isExit = false
   val commands = Array(
     ListCommand(this),
@@ -24,6 +25,11 @@ class Program extends IProgram {
   }
 
   def run(): Unit = {
+    storage.readAll() match {
+      case Failure(exception) => println(s"Gagal Membaca Buku: $exception")
+      case Success(value) => bukuList.addAll(value)
+    }
+
     while (!isExit) {
       println("Opsi:")
       for ((cmd, index) <- commands.zipWithIndex) {
@@ -40,6 +46,11 @@ class Program extends IProgram {
           cmd.execute()
           println()
       }
+    }
+
+    storage.saveAll(bukuList.toArray) match {
+      case Failure(exception) => println(s"Gagal Menyimpan Buku: $exception")
+      case Success(_) =>
     }
   }
 }
