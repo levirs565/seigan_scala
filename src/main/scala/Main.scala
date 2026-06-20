@@ -1,3 +1,6 @@
 import progam.Program
 
-@main def main(): Unit = Program().run()
+@main
+def main(): Unit = {
+  Program().run()
+}

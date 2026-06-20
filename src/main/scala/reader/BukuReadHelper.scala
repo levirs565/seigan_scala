@@ -4,8 +4,22 @@ import scala.io.StdIn.{readInt, readLine, readLong}
 import scala.util.Try
 
 object BukuReadHelper {
-  def readKode(prompt: String): Unit = {}
-  
+  def readKode(extraCandidate: String => Boolean): String = {
+    while (true) {
+      print("Kode: ")
+
+      val kode = readLine()
+
+      if (kode.length() > 4) {
+        println("Kode maksimal 4 karakter")
+      } else if (extraCandidate(kode)) {
+        return kode;
+      }
+    }
+
+    ""
+  }
+
 
   def readJudul(prompt: String): String = {
     print(prompt)

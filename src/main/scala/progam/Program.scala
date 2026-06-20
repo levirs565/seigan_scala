@@ -1,6 +1,6 @@
 package progam
 
-import commands.{ExitCommand, ListCommand}
+import commands.{AddCommand, ExitCommand, ListCommand}
 import entity.Buku
 
 import scala.collection.mutable.ArrayBuffer
@@ -11,6 +11,7 @@ class Program extends IProgram {
   var isExit = false
   val commands = Array(
     ListCommand(this),
+    AddCommand(this),
     ExitCommand(this)
   )
 
