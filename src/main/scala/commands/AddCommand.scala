@@ -2,7 +2,9 @@ package commands
 
 import entity.Buku
 import progam.IProgram
-import reader.BukuReadHelper.{readHarga, readJudul, readKode, readPenggarang, readTahunTerbit}
+import reader.BukuReadHelper.*
+
+import scala.util.chaining.scalaUtilChainingOps
 
 class AddCommand(program: IProgram) extends Command(program) {
   override val name: String = "Tambah Buku"
@@ -10,12 +12,13 @@ class AddCommand(program: IProgram) extends Command(program) {
   override def execute(): Unit = {
     println("=== Menambah Buku ===")
 
-    val kode = readKode(newCode => {
-      if (program.bukuList.exists(_.kode == newCode)) {
-        println("Kode sudah digunakan")
-        false
-      } else true
-    })
+    val kode = readKode { newCode =>
+      !program.bukuList.exists(_.kode == newCode).tap { exist =>
+        if (exist) {
+          println("Kode sudah digunakan")
+        }
+      }
+    }
     val judul = readJudul("Judul: ")
     val penggarang = readPenggarang("Penggarang: ")
     val tahunTerbit = readTahunTerbit("Tahun Terbit: ")
